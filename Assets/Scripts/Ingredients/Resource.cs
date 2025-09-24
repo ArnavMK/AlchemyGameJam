@@ -13,7 +13,7 @@ public class Resource
 {
     private ResourceType type;
     private string color;
-    private int usecases;
+    public int usecases;
     private bool canBeCooked = true;
     private string resourceName;
 

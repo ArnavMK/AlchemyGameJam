@@ -2,8 +2,12 @@ using UnityEngine;
 
 public class CookButton : MonoBehaviour
 {
+
     public void OnClick()
     {
-        Cauldron.instance.Cook();
+        if (!DialogueSystem.instance.isDialogueOngoing)
+        {
+            Cauldron.instance.Cook();
+        }
     }
 }

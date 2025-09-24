@@ -18,7 +18,13 @@ public class ResultSpawner : MonoBehaviour
 
         for (int i = 0; i < result.Value; i++)
         {
-            GameObject prefab = Instantiate(this.resultPrefab, transform.GetChild(0).position, Quaternion.identity);
+            GameObject prefab = Instantiate(this.resultPrefab, transform.position, Quaternion.identity);
+
+            if (prefab.TryGetComponent(out CauldronOutputResource component))
+            {
+                component.Initialize(result.Key.GetName());
+            }
+
             if (prefab.TryGetComponent(out Rigidbody2D rb))
             {
                 rb.gravityScale = 3f;

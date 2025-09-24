@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0de4ab4d5dc9df4dc90846ba29f50d29, type: 3}
+  m_Name: ResourceSpriteDB
+  m_EditorClassIdentifier: Assembly-CSharp::ResourceSpriteDB
+  entries:
+  - key: aluminium
+    sprite: {fileID: -5383749540795232746, guid: c0a47f3d675859707b0019cc7966bc11, type: 3}
+  - key: amber
+    sprite: {fileID: 6296370363887097069, guid: 889e5087bcd6013d6ab50c79718657dd, type: 3}
+  - key: brass
+    sprite: {fileID: 5549541105011980074, guid: 8939b6a8b29c54adea4adcf40984e893, type: 3}
+  - key: brine
+    sprite: {fileID: 4053712741101770187, guid: a6befafe52b675b15b45d993e515c127, type: 3}
+  - key: bronze
+    sprite: {fileID: -7748819261645216319, guid: cc01872e5e146d246b989319eacaf310, type: 3}
+  - key: chalcocite
+    sprite: {fileID: 5397301071324637435, guid: 53223e325c69ac3d3b7c5ee8d5053427, type: 3}
+  - key: cinnabar
+    sprite: {fileID: 5437497785298024040, guid: aa62b8840cde07fc2817a0f668503a70, type: 3}
+  - key: cobalt
+    sprite: {fileID: 1620505313434328584, guid: eadcc06124c3a5e5aa0d0e26586607d7, type: 3}
+  - key: copper
+    sprite: {fileID: -4673536048321637515, guid: 835b16d0af026528a93d156eb55cbe81, type: 3}
+  - key: crystal
+    sprite: {fileID: 7479642271789056252, guid: b0b73281509d14b24b412e34e00c5650, type: 3}
+  - key: diamond
+    sprite: {fileID: 6586461156150141773, guid: a881d960da061332b83912071f84f6b5, type: 3}
+  - key: eclipsed bronze
+    sprite: {fileID: -3167229943316432437, guid: e5258d5b048744d18ab0381696fea804, type: 3}
+  - key: ferrocobalt
+    sprite: {fileID: -498027901268257468, guid: 1d5dc08ed3adfce9988684d961a7acbb, type: 3}
+  - key: galvanite
+    sprite: {fileID: 7040138213789635741, guid: 3e296e53058b815da9e8acb0fff5833e, type: 3}
+  - key: gold
+    sprite: {fileID: -6301429047446442448, guid: 1f8b842e0d64282f48eb56da07bc38c8, type: 3}
+  - key: greyflow
+    sprite: {fileID: 1846671751740393972, guid: 1256bab22421ffbc7a40eeb416e94a9d, type: 3}
+  - key: greysteel
+    sprite: {fileID: 4661380237867729403, guid: 91a6659a370180a99a0fcf1a1e5265c5, type: 3}
+  - key: heavensteel
+    sprite: {fileID: -8885435811641086197, guid: 0da8a4642e18b1c90b7502ad87814b73, type: 3}
+  - key: iron
+    sprite: {fileID: 4750651203034271755, guid: 4580ab520998ee56a8dc9adbf15794a2, type: 3}
+  - key: lead
+    sprite: {fileID: 4210619418103899989, guid: aa0244fdbd097fec295d5cd38beb54c5, type: 3}
+  - key: mercury
+    sprite: {fileID: -6598367483305676441, guid: ae48af2a629a9f0deaf9383c8594242b, type: 3}
+  - key: moisanite
+    sprite: {fileID: 2242806822837800542, guid: e2659e4cc076449d5afe7e6082e6f46a, type: 3}
+  - key: morphic copper
+    sprite: {fileID: -7705169007781935074, guid: 9e4099821fa7f12d09938bbe1243b563, type: 3}
+  - key: palladium
+    sprite: {fileID: 51299622712930373, guid: f40c506dc80e4eff9943cb5d338e9aa3, type: 3}
+  - key: permalloy
+    sprite: {fileID: 1508499095575037622, guid: 1905652c7d82e6a1fbfc24e24725fdb5, type: 3}
+  - key: pewter
+    sprite: {fileID: -6124263521027046372, guid: 6435d7b2e6eee3041aceb38702d56d9d, type: 3}
+  - key: philosoper's stone
+    sprite: {fileID: -2747251236195351643, guid: f32c0f811d21a0fa5bdb3f8061ed7a36, type: 3}
+  - key: quartz
+    sprite: {fileID: 7892299103824669735, guid: 76908ddf7901bb200ad16379e363c3ac, type: 3}
+  - key: red aether
+    sprite: {fileID: 8766383452199119258, guid: f2d8297f2e4077d21b7cb8a085d8d212, type: 3}
+  - key: ruby
+    sprite: {fileID: 1041003540372436296, guid: 7a785b2470bc077d79a209380303a9ec, type: 3}
+  - key: rust
+    sprite: {fileID: -6801710324916499091, guid: bfe1cf02011c58175af95437d0a314c6, type: 3}
+  - key: salt
+    sprite: {fileID: -1162442978445507191, guid: 8bafa8ca8732853f1803dbca986e949c, type: 3}
+  - key: saphire
+    sprite: {fileID: 9083210584366804286, guid: 22a9de234ec3c900e8b36e54510ed13c, type: 3}
+  - key: silver
+    sprite: {fileID: 7081527322082503550, guid: ede4f7d998a35ec70944ba808901a942, type: 3}
+  - key: skysteel
+    sprite: {fileID: -7239876997158790154, guid: b63a4f34ee8e09618a3af4449e565a0b, type: 3}
+  - key: soft bronze
+    sprite: {fileID: 159878490596988582, guid: d676ca65ec22ae7c8bf858efce734956, type: 3}
+  - key: sterling
+    sprite: {fileID: 6157367412811171056, guid: c33a63056a70c56ca9aa4741fe4db90d, type: 3}
+  - key: stormmetal
+    sprite: {fileID: -2949623548691161045, guid: 382a15538b2f6131ab8a582a96c27bca, type: 3}
+  - key: sulfur
+    sprite: {fileID: -6943539554766238405, guid: 6c6ca4415c57d60ba8dd42f332a65ea2, type: 3}
+  - key: sulfurous tin
+    sprite: {fileID: 4704157123956668720, guid: f45ebd86cc673c3b3b7201aa0e4f5aba, type: 3}
+  - key: tarnish
+    sprite: {fileID: 3884577218616989680, guid: 64d83ec100dee34bb8b6a3f983e8cbb1, type: 3}
+  - key: tin
+    sprite: {fileID: -7648381962778397868, guid: 4b9b53b1f310028538d5804143cda3be, type: 3}
+  - key: titanium
+    sprite: {fileID: -6061471572716847069, guid: ef0247d569bf50500b855b35e85f35e6, type: 3}
+  - key: verdantium
+    sprite: {fileID: 8857379474380801834, guid: a6b5cd29cebdf28b18466a14eb618a0b, type: 3}
+  - key: zinc
+    sprite: {fileID: 2934560035062825361, guid: acc0fd0c68f59e606b1b9147d6444f48, type: 3}

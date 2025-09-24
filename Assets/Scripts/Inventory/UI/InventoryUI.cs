@@ -14,14 +14,11 @@ public class InventoryUI : MonoBehaviour
 
     private void Inventory_OnInventoryChanged(object sender, System.EventArgs e)
     {
-        Debug.Log("Inventory changed, updating UI");
         UpdateUi();
     }
 
     private void UpdateUi()
     {
-        Debug.Log("Updating Inventory UI");
-
         // destroy all existing resource tiles
         foreach (Transform child in resourceTileParentPanel.transform)
         {

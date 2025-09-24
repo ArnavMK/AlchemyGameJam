@@ -13,7 +13,6 @@ public class CauldronIngredientEditor : MonoBehaviour
 
     private void Cauldron_OnResourceListChanged(object sender, List<Resource> resource)
     {
-        Debug.Log("Resource list for cauldron changed, updating UI");
         UpdateUi(resource);
     }
 

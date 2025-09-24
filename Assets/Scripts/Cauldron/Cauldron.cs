@@ -10,9 +10,11 @@ public class Cauldron : MonoBehaviour
     private RecipeManager recipeManager;
     private List<Resource> currentResources = new();
 
+
     public event EventHandler<KeyValuePair<Resource, int>> OnCook;
     public event EventHandler<string> OnCookFailed;
     public event EventHandler<List<Resource>> OnResourceListChanged;
+    public event EventHandler OnGameCompleted;
 
     private enum CauldronState
     {
@@ -33,6 +35,25 @@ public class Cauldron : MonoBehaviour
     private void Start()
     {
         Inventory.instance.OnItemUsed += Inventory_OnItemUsed;
+        OnCookFailed += Cauldron_OnCookFailed;
+    }
+
+    private void Cauldron_OnCookFailed(object sender, string err)
+    {
+        currentResources.Clear();
+        OnResourceListChanged?.Invoke(this, currentResources);
+    }
+
+    public bool IsFull()
+    {
+        if (currentResources.Count >= 2)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private void Inventory_OnItemUsed(object sender, string itemName)
@@ -59,6 +80,22 @@ public class Cauldron : MonoBehaviour
 
         if (currentState == CauldronState.Ready)
         {
+
+            if (currentResources.Count == 2)
+            {
+                foreach (var resource in currentResources)
+                {
+                    if (resource.GetName() == "philosoper's stone")
+                    {
+                        Debug.Log("GameCompleted!!! Well Done");
+                        Resource gold = recipeManager.GetResourceFromKey("gold");
+                        OnCook?.Invoke(this, new KeyValuePair<Resource, int>(gold, 50));
+                        OnGameCompleted?.Invoke(this, EventArgs.Empty);
+                        return gold;
+                    }
+                }
+            }
+
             string id = Recipe.CreateId(currentResources[0], currentResources[1]);
             Recipe matchingRecipe = recipeManager.GetRecipeFromKey(id);
 

@@ -8,9 +8,12 @@ public class Inventory : MonoBehaviour
     public static Inventory instance { get; private set; }
 
     private Dictionary<string, int> inventory = new();
+    private Dictionary<string, string> discoverdResources = new();
 
     public event EventHandler OnInventoryChanged;
+    public event EventHandler OnNewResourceAdded;
     public event EventHandler<string> OnItemUsed;
+    public event EventHandler OnDiscoveredResourcesChanged;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -22,45 +25,33 @@ public class Inventory : MonoBehaviour
     void Start()
     {
         ResourceTile.OnResourceTileClicked += ResourceTile_OnResourceTileClicked;
-        // Add some test items to the inventory
-        inventory["salt"] = 5;
-        inventory["sulfur"] = 3;
-        inventory["copper"] = 8;
-        inventory["iron"] = 12;
-        inventory["tin"] = 4;
-        inventory["silver"] = 2;
-        inventory["crystal"] = 6;
-        inventory["bronze"] = 3;
-        inventory["mercury"] = 1;
-        inventory["lead"] = 2;
-        inventory["titanium"] = 1;
-        inventory["aluminium"] = 1;
-        inventory["cobalt"] = 4;
-        inventory["zinc"] = 3;
-        inventory["palladium"] = 2;
-        inventory["ruby"] = 1;
-        inventory["red aether"] = 1;
+        Cauldron.instance.OnCook += Cauldron_OnCook;
+    }
 
-        // Add some crafted items with 0 recipes to test those too
-        inventory["rust"] = 2;
-        inventory["tarnish"] = 1;
-        inventory["brass"] = 3;
-        inventory["quartz"] = 2;
 
-        Debug.Log("Inventory initialized with " + inventory.Count + " items");
+    private void Cauldron_OnCook(object sender, KeyValuePair<Resource, int> e)
+    {
+        AddItem(e.Key.GetName(), e.Value);
     }
 
     private void ResourceTile_OnResourceTileClicked(object sender, Resource r)
     {
+        if (Cauldron.instance.IsFull())
+        {
+            return;
+        }
         UseItem(r.GetName());
     }
-    
+
     // Update is called once per frame
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
             OnInventoryChanged?.Invoke(this, EventArgs.Empty);
+            OnNewResourceAdded?.Invoke(this, EventArgs.Empty);
+            OnDiscoveredResourcesChanged?.Invoke(this, EventArgs.Empty);
+            Debug.Log("New resources added init");
         }
     }
 
@@ -73,8 +64,19 @@ public class Inventory : MonoBehaviour
         else
         {
             inventory[itemName] = quantity;
+            OnNewResourceAdded?.Invoke(this, EventArgs.Empty);
         }
+        AddItemtoDiscoveredList(itemName);
         OnInventoryChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void AddItemtoDiscoveredList(string itemName)
+    {
+        if (!discoverdResources.ContainsKey(itemName))
+        {
+            discoverdResources.Add(itemName, itemName);
+            OnDiscoveredResourcesChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public void UseItem(string itemName)
@@ -95,5 +97,15 @@ public class Inventory : MonoBehaviour
     public Dictionary<string, int> GetInventory()
     {
         return inventory;
+    }
+
+    public Dictionary<string, string> GetDiscoveredResourcesList()
+    {
+        return discoverdResources;
+    }
+
+    public bool HasItem(string itemName)
+    {
+        return inventory.ContainsKey(itemName);
     }
 }

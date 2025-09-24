@@ -17,14 +17,11 @@ public class PlanetDiscoverySystem : MonoBehaviour
 
     private HashSet<string> discoveredResources = new HashSet<string>();
 
-    [SerializeField] private float discoveryTimeInterval = 10f;    
 
     // Planet data with their requirements
     private List<PlanetData> planetDataList = new List<PlanetData>();
     
     // Timer for random discovery
-    private float discoveryTimer;
-    private float nextDiscoveryTime;
     
     public event EventHandler<string> OnPlanetDiscovered;
     public event EventHandler<string> OnResourceDiscovered;
@@ -46,27 +43,16 @@ public class PlanetDiscoverySystem : MonoBehaviour
     {
         InitializePlanetData();
         InitializeDiscoveredResources();
-        SetNextDiscoveryTime();
         
-        // Subscribe to inventory changes to track new resources
-        Inventory.instance.OnInventoryChanged += OnInventoryChanged;
+        // Subscribe to discovered resources changes to trigger planet discovery
+        Inventory.instance.OnDiscoveredResourcesChanged += OnDiscoveredResourcesChanged;
     }
 
     private void OnDestroy()
     {
         if (Inventory.instance != null)
         {
-            Inventory.instance.OnInventoryChanged -= OnInventoryChanged;
-        }
-    }
-
-    private void Update()
-    {
-        discoveryTimer += Time.deltaTime;
-        
-        if (discoveryTimer >= nextDiscoveryTime)
-        {
-            TryDiscoverPlanet();
+            Inventory.instance.OnDiscoveredResourcesChanged -= OnDiscoveredResourcesChanged;
         }
     }
 
@@ -76,55 +62,54 @@ public class PlanetDiscoverySystem : MonoBehaviour
         
         // Add planets in order of required unique resources
         planetDataList.Add(new PlanetData { planetName = "Moon", resourceName = "silver", requiredUniqueResources = 3, isDiscovered = false });
-        planetDataList.Add(new PlanetData { planetName = "Venus", resourceName = "copper", requiredUniqueResources = 4, isDiscovered = false });
-        planetDataList.Add(new PlanetData { planetName = "Mars", resourceName = "iron", requiredUniqueResources = 5, isDiscovered = false });
-        planetDataList.Add(new PlanetData { planetName = "Mercury", resourceName = "tin", requiredUniqueResources = 7, isDiscovered = false });
-        planetDataList.Add(new PlanetData { planetName = "Jupiter", resourceName = "tin", requiredUniqueResources = 9, isDiscovered = false });
-        planetDataList.Add(new PlanetData { planetName = "Mercury", resourceName = "mercury", requiredUniqueResources = 11, isDiscovered = false });
-        planetDataList.Add(new PlanetData { planetName = "Saturn", resourceName = "lead", requiredUniqueResources = 13, isDiscovered = false });
+        planetDataList.Add(new PlanetData { planetName = "Venus", resourceName = "copper", requiredUniqueResources = 7, isDiscovered = false });
+        planetDataList.Add(new PlanetData { planetName = "Mars", resourceName = "iron", requiredUniqueResources = 10, isDiscovered = false });
+        planetDataList.Add(new PlanetData { planetName = "Jupiter", resourceName = "tin", requiredUniqueResources = 16, isDiscovered = false });
+        planetDataList.Add(new PlanetData { planetName = "Mercury", resourceName = "mercury", requiredUniqueResources = 25, isDiscovered = false });
+        planetDataList.Add(new PlanetData { planetName = "Saturn", resourceName = "lead", requiredUniqueResources = 35, isDiscovered = false });
     }
 
     private void InitializeDiscoveredResources()
     {
-        // Start with salt and sulfur as initially available
-        discoveredResources.Add("salt");
-        discoveredResources.Add("sulfur");
+        // Sync with inventory's discovered resources list
+        var inventoryDiscoveredResources = Inventory.instance.GetDiscoveredResourcesList();
+        discoveredResources.Clear();
         
-        Debug.Log("PlanetDiscoverySystem initialized with salt and sulfur as base discovered resources");
+        // Add all resources from inventory's discovered list
+        foreach (var resource in inventoryDiscoveredResources)
+        {
+            discoveredResources.Add(resource.Key);
+        }
+
+        // Ensure salt and sulfur are always available initially
+        if (!discoveredResources.Contains("salt"))
+        {
+            discoveredResources.Add("salt");
+        }
+        if (!discoveredResources.Contains("sulfur"))
+        {
+            discoveredResources.Add("sulfur");
+        }
+        Debug.Log($"PlanetDiscoverySystem initialized with {discoveredResources.Count} discovered resources: {string.Join(", ", discoveredResources)}");
     }
 
-    private void OnInventoryChanged(object sender, EventArgs e)
+    private void OnDiscoveredResourcesChanged(object sender, EventArgs e)
     {
-        // Check for new unique resources in inventory
-        var inventory = Inventory.instance.GetInventory();
-        int uniqueResourceCount = 0;
-        
-        foreach (var item in inventory)
-        {
-            if (item.Value > 0) // Resource exists in inventory
-            {
-                uniqueResourceCount++;
-            }
-        }
-        
-        Debug.Log($"Total unique resources in inventory: {uniqueResourceCount}");
+        TryDiscoverPlanet();    
     }
 
     private void TryDiscoverPlanet()
     {
-        Debug.Log("Trying to discover a planet");
-        var inventory = Inventory.instance.GetInventory();
+        var inventory = Inventory.instance.GetDiscoveredResourcesList();
         int uniqueResourceCount = 0;
-        
+
         // Count unique resources in inventory
-        foreach (var item in inventory)
+        foreach (var _ in inventory)
         {
-            if (item.Value > 0) // Resource exists in inventory
-            {
-                uniqueResourceCount++;
-            }
+            uniqueResourceCount++;
         }
-        
+
+        Debug.Log("Trying to discover a planet. total unique items: " + uniqueResourceCount.ToString());
         // Check if we can discover any planets
         foreach (var planet in planetDataList)
         {
@@ -134,9 +119,8 @@ public class PlanetDiscoverySystem : MonoBehaviour
                 return; // Only discover one planet at a time
             }
         }
-        
-        // Set next discovery time even if no planet was discovered
-        SetNextDiscoveryTime();
+
+        Debug.Log("No planets were discovered"); 
     }
 
     private void DiscoverPlanet(PlanetData planet)
@@ -149,17 +133,8 @@ public class PlanetDiscoverySystem : MonoBehaviour
         // Trigger events
         OnPlanetDiscovered?.Invoke(this, planet.planetName);
         OnResourceDiscovered?.Invoke(this, planet.resourceName);
-        
-        // Reset timer for next discovery
-        discoveryTimer = 0f;
-        SetNextDiscoveryTime();
     }
 
-    private void SetNextDiscoveryTime()
-    {
-        nextDiscoveryTime = discoveryTimeInterval; 
-        Debug.Log($"Next planet discovery attempt in {nextDiscoveryTime:F1} seconds");
-    }
 
     // Public methods for other systems to query
     public bool IsResourceDiscovered(string resourceName)
@@ -179,18 +154,8 @@ public class PlanetDiscoverySystem : MonoBehaviour
 
     public int GetUniqueResourceCount()
     {
-        var inventory = Inventory.instance.GetInventory();
-        int count = 0;
-        
-        foreach (var item in inventory)
-        {
-            if (item.Value > 0)
-            {
-                count++;
-            }
-        }
-        
-        return count;
+        var discoveredResourcesList = Inventory.instance.GetDiscoveredResourcesList();
+        return discoveredResourcesList.Count;
     }
 
     // Method to manually trigger planet discovery (for testing)
